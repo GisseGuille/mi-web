@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo interactiva | Catálogo digital para una despensa — Giselle</title>
+<style>
+  /* ===== Mismos colores y variables que el sitio principal ===== */
+  :root {
+    --color-fondo: #ffffff;
+    --color-fondo-alt: #f7f5f2;
+    --color-texto: #222222;
+    --color-texto-suave: #555555;
+    --color-primario: #2f6f4f;
+    --color-primario-oscuro: #234f38;
+    --color-borde: #e0ddd7;
+    --fuente: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --radio: 12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--fuente);
+    color: var(--color-texto);
+    background-color: var(--color-fondo);
+    line-height: 1.6;
+  }
+
+  /* ===== Header simple con vuelta al sitio ===== */
+  header.demo-header {
+    position: sticky;
+    top: 0;
+    background-color: var(--color-fondo);
+    border-bottom: 1px solid var(--color-borde);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+  }
+
+  header.demo-header a.volver {
+    color: var(--color-texto-suave);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  header.demo-header a.volver:hover {
+    color: var(--color-primario);
+  }
+
+  header.demo-header .nombre {
+    font-weight: 700;
+    color: var(--color-primario-oscuro);
+  }
+
+  section {
+    padding: 3rem 1.5rem;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .franja:nth-child(even) {
+    background-color: var(--color-fondo-alt);
+  }
+
+  h1, h2 {
+    color: var(--color-primario-oscuro);
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  p {
+    color: var(--color-texto-suave);
+    font-size: 1.05rem;
+  }
+
+  .etiqueta {
+    display: inline-block;
+    background-color: var(--color-primario);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+
+  /* ===== Frase de antes / después, destacada ===== */
+  .frase-destacada {
+    font-size: 1.25rem;
+    color: var(--color-texto);
+    border-left: 4px solid var(--color-primario);
+    padding: 0.5rem 0 0.5rem 1.2rem;
+    margin: 0;
+  }
+
+  /* ===== Layout de la demo: catálogo + panel de pedido ===== */
+  .demo-layout {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 860px) {
+    .demo-layout {
+      grid-template-columns: 1.5fr 1fr;
+      align-items: start;
+    }
+  }
+
+  /* ===== Grilla de productos ===== */
+  .grilla-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 1rem;
+  }
+
+  .producto {
+    background-color: #fff;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .producto .emoji {
+    font-size: 2.2rem;
+  }
+
+  .producto .nombre-prod {
+    font-weight: 600;
+    font-size: 0.95rem;
+    min-height: 2.4em;
+  }
+
+  .producto .precio {
+    color: var(--color-primario-oscuro);
+    font-weight: 700;
+  }
+
+  .producto .stock {
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  .stock.ok {
+    background-color: #e5f1ea;
+    color: var(--color-primario-oscuro);
+  }
+
+  .stock.bajo {
+    background-color: #fbe9d7;
+    color: #a05a12;
+  }
+
+  .stock.agotado {
+    background-color: #f5e1e1;
+    color: #a13a3a;
+  }
+
+  .boton-pedir {
+    margin-top: 0.4rem;
+    background-color: var(--color-primario);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .boton-pedir:hover:not(:disabled) {
+    background-color: var(--color-primario-oscuro);
+  }
+
+  .boton-pedir:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* ===== Panel de pedido / simulación de WhatsApp ===== */
+  .panel-pedido {
+    background-color: var(--color-fondo-alt);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 1.2rem;
+    position: sticky;
+    top: 5.5rem;
+  }
+
+  .panel-pedido h3 {
+    margin-top: 0;
+    color: var(--color-primario-oscuro);
+    font-size: 1.05rem;
+  }
+
+  .lista-pedido {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0;
+    min-height: 1.5rem;
+  }
+
+  .lista-pedido li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--color-texto);
+    padding: 0.3rem 0;
+    border-bottom: 1px dashed var(--color-borde);
+  }
+
+  .lista-pedido .vacio {
+    color: var(--color-texto-suave);
+    font-style: italic;
+    border-bottom: none;
+  }
+
+  .subtotal {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    color: var(--color-primario-oscuro);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-borde);
+  }
+
+  /* Burbuja de WhatsApp simulada */
+  .burbuja-whatsapp {
+    background-color: #dcf8c6;
+    border-radius: 10px;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    font-size: 0.88rem;
+    color: #1c1c1c;
+    white-space: pre-line;
+  }
+
+  .burbuja-whatsapp .etiqueta-wsp {
+    display: block;
+    font-size: 0.7rem;
+    color: #4a884a;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+  }
+
+  .boton-reiniciar {
+    margin-top: 1rem;
+    background: none;
+    border: 1px solid var(--color-borde);
+    color: var(--color-texto-suave);
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .boton-reiniciar:hover {
+    border-color: var(--color-primario);
+    color: var(--color-primario);
+  }
+
+  /* ===== CTA final ===== */
+  .cta-final {
+    text-align: center;
+    background-color: var(--color-primario-oscuro);
+    color: #fff;
+  }
+
+  .cta-final h2 {
+    color: #fff;
+  }
+
+  .cta-final p {
+    color: #e8ede9;
+  }
+
+  .boton-cta {
+    display: inline-block;
+    margin-top: 1.2rem;
+    background-color: #fff;
+    color: var(--color-primario-oscuro);
+    padding: 0.9rem 2rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .boton-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
+</style>
+</head>
+<body>
+
+  <header class="demo-header">
+    <a href="index.html" class="volver">‹ Volver al inicio</a>
+    <span class="nombre">Giselle</span>
+  </header>
+
+  <!-- ===== Antes ===== -->
+  <div class="franja">
+    <section>
+      <span class="etiqueta">Ejemplo: una despensa de barrio</span>
+      <h1>Mirá cómo cambia el día a día de una despensa con esto</h1>
+      <p class="frase-destacada">
+        Antes: la dueña contesta uno por uno "¿tenés fideos?", "¿te queda aceite?" por WhatsApp,
+        y a veces confirma algo que ya se le acabó.
+      </p>
+    </section>
+  </div>
+
+  <!-- ===== Demo interactiva ===== -->
+  <div class="franja">
+    <section>
+      <h2>Probá el catálogo vos misma/o</h2>
+      <p>Elegí productos como lo haría un cliente. Fijate cómo el stock se actualiza solo.</p>
+
+      <div class="demo-layout">
+        <div class="grilla-productos" id="grilla-productos"></div>
+
+        <div class="panel-pedido">
+          <h3>Tu pedido</h3>
+          <ul class="lista-pedido" id="lista-pedido">
+            <li class="vacio">Todavía no elegiste nada.</li>
+          </ul>
+          <div class="subtotal">
+            <span>Subtotal</span>
+            <span id="subtotal-monto">$0</span>
+          </div>
+
+          <div class="burbuja-whatsapp">
+            <span class="etiqueta-wsp">Así le llega a la despensa</span>
+            <span id="mensaje-whatsapp">Cuando elijas un producto, acá vas a ver el mensaje que le llegaría a la despensa, ya armado.</span>
+          </div>
+
+          <button class="boton-reiniciar" onclick="reiniciarDemo()">Reiniciar demo</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== Después ===== -->
+  <div class="franja">
+    <section>
+      <p class="frase-destacada">
+        Después: el cliente arma su pedido solo desde el catálogo, a la despensa le llega ya
+        ordenado, y el stock se actualiza sin que nadie tenga que anotarlo a mano.
+      </p>
+    </section>
+  </div>
+
+  <!-- ===== CTA final ===== -->
+  <div class="franja cta-final">
+    <section>
+      <h2>¿Lo ves claro?</h2>
+      <p>Esto fue un ejemplo con una despensa. Se arma igual para tu tipo de negocio.</p>
+      <a href="index.html#reunion" class="boton-cta">¿Lo ves claro? Agendá 20 minutos y te armo la versión para tu negocio</a>
+    </section>
+  </div>
+
+  <script>
+    // ===== Datos de ejemplo de una despensa (realistas, sin precios reales de servicio) =====
+    const productosIniciales = [
+      { id: 'fideos',  emoji: '🍝', nombre: 'Fideos tallarines 500g', precio: 1200, stock: 4 },
+      { id: 'arroz',   emoji: '🍚', nombre: 'Arroz doble carozo 1kg', precio: 1500, stock: 3 },
+      { id: 'aceite',  emoji: '🫒', nombre: 'Aceite de girasol 900ml', precio: 2600, stock: 2 },
+      { id: 'yerba',   emoji: '🧉', nombre: 'Yerba mate 1kg', precio: 3800, stock: 5 },
+      { id: 'harina',  emoji: '🌾', nombre: 'Harina 000 1kg', precio: 900, stock: 6 },
+      { id: 'azucar',  emoji: '🍬', nombre: 'Azúcar 1kg', precio: 1100, stock: 3 },
+      { id: 'tomate',  emoji: '🥫', nombre: 'Puré de tomate 520g', precio: 850, stock: 4 },
+      { id: 'papel',   emoji: '🧻', nombre: 'Papel higiénico x4', precio: 2200, stock: 2 },
+      { id: 'galletitas', emoji: '🍪', nombre: 'Galletitas surtidas', precio: 1300, stock: 5 },
+      { id: 'leche',   emoji: '🥛', nombre: 'Leche entera 1L', precio: 1050, stock: 6 }
+    ];
+
+    // Copia de trabajo (se reinicia con "Reiniciar demo")
+    let productos = JSON.parse(JSON.stringify(productosIniciales));
+    let pedido = []; // { nombre, precio }
+
+    function formatoPesos(numero) {
+      return '$' + numero.toLocaleString('es-AR');
+    }
+
+    function etiquetaStock(stock) {
+      if (stock === 0) return { texto: 'Sin stock', clase: 'agotado' };
+      if (stock <= 2) return { texto: 'Últimas unidades', clase: 'bajo' };
+      return { texto: 'Hay stock', clase: 'ok' };
+    }
+
+    function renderizarProductos() {
+      const grilla = document.getElementById('grilla-productos');
+      grilla.innerHTML = '';
+
+      productos.forEach(function (prod) {
+        const estado = etiquetaStock(prod.stock);
+        const tarjeta = document.createElement('div');
+        tarjeta.className = 'producto';
+        tarjeta.innerHTML =
+          '<span class="emoji">' + prod.emoji + '</span>' +
+          '<span class="nombre-prod">' + prod.nombre + '</span>' +
+          '<span class="precio">' + formatoPesos(prod.precio) + '</span>' +
+          '<span class="stock ' + estado.clase + '">' + estado.texto + '</span>' +
+          '<button class="boton-pedir" onclick="pedirProducto(\'' + prod.id + '\')" ' +
+          (prod.stock === 0 ? 'disabled' : '') + '>' +
+          (prod.stock === 0 ? 'Sin stock' : 'Pedir') + '</button>';
+        grilla.appendChild(tarjeta);
+      });
+    }
+
+    function renderizarPedido() {
+      const lista = document.getElementById('lista-pedido');
+      const subtotalMonto = document.getElementById('subtotal-monto');
+      const mensajeWhatsapp = document.getElementById('mensaje-whatsapp');
+
+      lista.innerHTML = '';
+
+      if (pedido.length === 0) {
+        lista.innerHTML = '<li class="vacio">Todavía no elegiste nada.</li>';
+        subtotalMonto.textContent = '$0';
+        mensajeWhatsapp.textContent = 'Cuando elijas un producto, acá vas a ver el mensaje que le llegaría a la despensa, ya armado.';
+        return;
+      }
+
+      let subtotal = 0;
+      const conteo = {};
+
+      pedido.forEach(function (item) {
+        conteo[item.nombre] = conteo[item.nombre] || { cantidad: 0, precio: item.precio };
+        conteo[item.nombre].cantidad += 1;
+        subtotal += item.precio;
+      });
+
+      Object.keys(conteo).forEach(function (nombre) {
+        const item = conteo[nombre];
+        const li = document.createElement('li');
+        li.innerHTML = '<span>' + item.cantidad + ' x ' + nombre + '</span><span>' + formatoPesos(item.precio * item.cantidad) + '</span>';
+        lista.appendChild(li);
+      });
+
+      subtotalMonto.textContent = formatoPesos(subtotal);
+
+      const detalleMensaje = Object.keys(conteo).map(function (nombre) {
+        return conteo[nombre].cantidad + ' ' + nombre;
+      }).join(', ');
+
+      mensajeWhatsapp.textContent =
+        'Hola! Te hago este pedido: ' + detalleMensaje + '. ¿Lo puedo pasar a buscar más tarde?';
+    }
+
+    function pedirProducto(id) {
+      const prod = productos.find(function (p) { return p.id === id; });
+      if (!prod || prod.stock === 0) return;
+
+      prod.stock -= 1;
+      pedido.push({ nombre: prod.nombre, precio: prod.precio });
+
+      renderizarProductos();
+      renderizarPedido();
+    }
+
+    function reiniciarDemo() {
+      productos = JSON.parse(JSON.stringify(productosIniciales));
+      pedido = [];
+      renderizarProductos();
+      renderizarPedido();
+    }
+
+    // Primer render al cargar la página
+    renderizarProductos();
+    renderizarPedido();
+  </script>
+
+</body>
+</html>
