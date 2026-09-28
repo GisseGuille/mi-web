@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giselle | Catálogos digitales para vender por WhatsApp</title>
+<style>
+  /* ===== Variables de estilo (colores, tipografía) ===== */
+  :root {
+    --color-fondo: #ffffff;
+    --color-fondo-alt: #f7f5f2;
+    --color-texto: #222222;
+    --color-texto-suave: #555555;
+    --color-primario: #2f6f4f;
+    --color-primario-oscuro: #234f38;
+    --color-borde: #e0ddd7;
+    --fuente: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --radio: 12px;
+    --espaciado-seccion: 4rem;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: var(--fuente);
+    color: var(--color-texto);
+    background-color: var(--color-fondo);
+    line-height: 1.6;
+  }
+
+  /* ===== Header ===== */
+  header.sitio-header {
+    position: sticky;
+    top: 0;
+    background-color: var(--color-fondo);
+    border-bottom: 1px solid var(--color-borde);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+  }
+
+  header.sitio-header .nombre {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-primario-oscuro);
+    text-decoration: none;
+  }
+
+  header.sitio-header nav a {
+    display: none; /* En mobile ocultamos el menú de anclas para no saturar */
+  }
+
+  @media (min-width: 768px) {
+    header.sitio-header nav a {
+      display: inline-block;
+      margin-left: 1.2rem;
+      color: var(--color-texto-suave);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    header.sitio-header nav a:hover {
+      color: var(--color-primario);
+    }
+  }
+
+  /* ===== Estructura general de secciones ===== */
+  section {
+    padding: var(--espaciado-seccion) 1.5rem;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  section:nth-child(even) {
+    background-color: var(--color-fondo-alt);
+  }
+
+  /* Como las secciones tienen fondo alterno, envolvemos con un div de ancho completo */
+  .franja {
+    width: 100%;
+  }
+
+  .franja:nth-child(even) {
+    background-color: var(--color-fondo-alt);
+  }
+
+  h1 {
+    font-size: 2rem;
+    color: var(--color-primario-oscuro);
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    color: var(--color-primario-oscuro);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--color-texto-suave);
+    font-size: 1.05rem;
+    margin: 0.5rem 0;
+  }
+
+  .etiqueta {
+    display: inline-block;
+    background-color: var(--color-primario);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+
+  /* ===== Caja de demo (placeholder) ===== */
+  .caja-demo {
+    border: 2px dashed var(--color-borde);
+    border-radius: var(--radio);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: var(--color-texto-suave);
+    background-color: #fff;
+    margin-top: 1.5rem;
+  }
+
+  /* ===== Listas con check ===== */
+  .lista-check {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .lista-check li {
+    padding-left: 1.6rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+    color: var(--color-texto-suave);
+  }
+
+  .lista-check li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: var(--color-primario);
+    font-weight: bold;
+  }
+
+  .lista-check.no li::before {
+    content: "✖";
+    color: #b23a3a;
+  }
+
+  /* ===== Pasos numerados ===== */
+  .pasos {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .paso {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .paso .numero {
+    flex-shrink: 0;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background-color: var(--color-primario);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  /* ===== Acordeón de preguntas frecuentes ===== */
+  .faq-item {
+    border-bottom: 1px solid var(--color-borde);
+  }
+
+  .faq-pregunta {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 1rem 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-texto);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-pregunta:hover {
+    color: var(--color-primario);
+  }
+
+  .faq-respuesta {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .faq-respuesta p {
+    padding-bottom: 1rem;
+  }
+
+  .faq-icono {
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  .faq-item.abierto .faq-icono {
+    transform: rotate(45deg);
+  }
+
+  /* ===== CTA final ===== */
+  .cta-final {
+    text-align: center;
+    background-color: var(--color-primario-oscuro);
+    color: #fff;
+  }
+
+  .cta-final h2 {
+    color: #fff;
+  }
+
+  .cta-final p {
+    color: #e8ede9;
+  }
+
+  .boton-cta {
+    display: inline-block;
+    margin-top: 1.5rem;
+    background-color: #fff;
+    color: var(--color-primario-oscuro);
+    padding: 0.9rem 2rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .boton-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    font-size: 0.85rem;
+    color: var(--color-texto-suave);
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===== Header con nombre ===== -->
+  <header class="sitio-header">
+    <a href="#inicio" class="nombre">Giselle</a>
+    <nav>
+      <a href="#para-quien">Para quién</a>
+      <a href="#demo">Demo</a>
+      <a href="#como-trabajo">Cómo trabajo</a>
+      <a href="#preguntas">Preguntas</a>
+      <a href="#reunion">Agendar</a>
+    </nav>
+  </header>
+
+  <!-- ===== 1. Quién soy y qué ofrezco ===== -->
+  <div class="franja">
+    <section id="inicio">
+      <span class="etiqueta">Catálogos digitales por WhatsApp</span>
+      <h1>Soy Giselle. Ayudo a tiendas, bazares, despensas y zapaterías a vender más fácil por WhatsApp.</h1>
+      <p>
+        [Texto placeholder] Armo catálogos digitales con stock conectado, para que no pierdas tiempo
+        ni vendas algo que ya no tenés.
+      </p>
+    </section>
+  </div>
+
+  <!-- ===== 2. Para quién sí / para quién no ===== -->
+  <div class="franja">
+    <section id="para-quien">
+      <h2>¿Es para vos?</h2>
+      <p>[Texto placeholder] Antes de seguir, veamos si esto tiene sentido para tu negocio.</p>
+
+      <h3>Sí, es para vos si...</h3>
+      <ul class="lista-check">
+        <li>[Placeholder] Atendés pedidos por WhatsApp y llevás el stock de memoria o en un cuaderno.</li>
+        <li>[Placeholder] Tenés un negocio chico o mediano: tienda, bazar, despensa o zapatería.</li>
+      </ul>
+
+      <h3>No es para vos si...</h3>
+      <ul class="lista-check no">
+        <li>[Placeholder] Ya tenés un sistema armado y buscás algo más grande o más técnico.</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- ===== 3. Demo (antes y después) ===== -->
+  <div class="franja">
+    <section id="demo">
+      <h2>Antes y después</h2>
+      <p>[Texto placeholder] Antes: mandás fotos una por una y no sabés si te queda stock. Después: tu cliente ve el catálogo, pide solo y vos ves el stock actualizado.</p>
+      <div class="caja-demo">
+        [Espacio reservado para la demo / video / capturas — se completa después]
+      </div>
+      <p>[Texto placeholder] Mirá cómo se ve en la vida real, con un negocio como el tuyo.</p>
+    </section>
+  </div>
+
+  <!-- ===== 4. Cómo trabajo, paso a paso ===== -->
+  <div class="franja">
+    <section id="como-trabajo">
+      <h2>Cómo trabajo, paso a paso</h2>
+      <p>[Texto placeholder] Vos seguís atendiendo como siempre, solo que ahora es mucho más simple.</p>
+      <div class="pasos">
+        <div class="paso">
+          <div class="numero">1</div>
+          <p>[Placeholder] Me pasás fotos, precios y cantidades de tus productos.</p>
+        </div>
+        <div class="paso">
+          <div class="numero">2</div>
+          <p>[Placeholder] Revisamos juntos el catálogo antes de dejarlo listo.</p>
+        </div>
+        <div class="paso">
+          <div class="numero">3</div>
+          <p>[Placeholder] En pocos días lo tenés funcionando con tu WhatsApp de siempre.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== 5. Cómo armo un presupuesto ===== -->
+  <div class="franja">
+    <section id="presupuesto">
+      <h2>Cómo armo un presupuesto</h2>
+      <p>[Texto placeholder] El número se habla en una charla de 20 minutos, después de que veas la demo funcionando.</p>
+      <p>[Texto placeholder] Así arrancamos por lo que necesitás vos, no por un precio genérico que no tiene que ver con tu negocio.</p>
+    </section>
+  </div>
+
+  <!-- ===== 6. Preguntas frecuentes ===== -->
+  <div class="franja">
+    <section id="preguntas">
+      <h2>Preguntas frecuentes</h2>
+
+      <div class="faq-item">
+        <button class="faq-pregunta" onclick="alternarFaq(this)">
+          ¿Funciona con tu WhatsApp de siempre?
+          <span class="faq-icono">+</span>
+        </button>
+        <div class="faq-respuesta">
+          <p>[Texto placeholder] Sí, funciona con el WhatsApp que ya usás todos los días.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta" onclick="alternarFaq(this)">
+          ¿Podés actualizarlo vos sola?
+          <span class="faq-icono">+</span>
+        </button>
+        <div class="faq-respuesta">
+          <p>[Texto placeholder] Sí, podés actualizar el catálogo sin depender de nadie más.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta" onclick="alternarFaq(this)">
+          ¿Qué pasa si se rompe?
+          <span class="faq-icono">+</span>
+        </button>
+        <div class="faq-respuesta">
+          <p>[Texto placeholder] Te acompaño para resolverlo, no quedás sola con el problema.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta" onclick="alternarFaq(this)">
+          ¿Necesitás comprar algo más?
+          <span class="faq-icono">+</span>
+        </button>
+        <div class="faq-respuesta">
+          <p>[Texto placeholder] No necesitás comprar equipos ni programas adicionales.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta" onclick="alternarFaq(this)">
+          ¿Cuánto tiempo te lleva a vos armarlo?
+          <span class="faq-icono">+</span>
+        </button>
+        <div class="faq-respuesta">
+          <p>[Texto placeholder] Es un proceso liviano y guiado, no te va a quitar tu tiempo de atender.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta" onclick="alternarFaq(this)">
+          ¿Esto sirve si tengo pocos productos?
+          <span class="faq-icono">+</span>
+        </button>
+        <div class="faq-respuesta">
+          <p>[Texto placeholder] Sí, se adapta al tamaño de tu catálogo, sea grande o chico.</p>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- ===== 7. CTA final: agendar reunión ===== -->
+  <div class="franja cta-final">
+    <section id="reunion">
+      <h2>¿Querés ver cómo queda en tu negocio?</h2>
+      <p>[Texto placeholder] Charlamos 20 minutos, sin compromiso. Agendá el horario que te quede mejor.</p>
+      <a href="#" class="boton-cta">Agendá una reunión de 20 minutos</a>
+    </section>
+  </div>
+
+  <footer>
+    <p>© 2026 Giselle — Catálogos digitales para negocios por WhatsApp</p>
+  </footer>
+
+  <script>
+    // Abre o cierra una pregunta del acordeón de FAQ
+    function alternarFaq(boton) {
+      const item = boton.parentElement;
+      const respuesta = item.querySelector('.faq-respuesta');
+      const estaAbierto = item.classList.contains('abierto');
+
+      // Cerramos todas las demás preguntas abiertas
+      document.querySelectorAll('.faq-item.abierto').forEach(function (otro) {
+        if (otro !== item) {
+          otro.classList.remove('abierto');
+          otro.querySelector('.faq-respuesta').style.maxHeight = null;
+        }
+      });
+
+      if (estaAbierto) {
+        item.classList.remove('abierto');
+        respuesta.style.maxHeight = null;
+      } else {
+        item.classList.add('abierto');
+        respuesta.style.maxHeight = respuesta.scrollHeight + 'px';
+      }
+    }
+  </script>
+
+</body>
+</html>
