@@ -16,7 +16,8 @@
     --color-borde: #e0ddd7;
     --fuente: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --radio: 12px;
-    --espaciado-seccion: 4rem;
+    --sombra: 0 4px 18px rgba(35, 79, 56, 0.08);
+    --espaciado-seccion: clamp(2.75rem, 6vw, 4.5rem);
   }
 
   * { box-sizing: border-box; }
@@ -29,6 +30,13 @@
     color: var(--color-texto);
     background-color: var(--color-fondo);
     line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 3px solid var(--color-primario);
+    outline-offset: 2px;
   }
 
   /* ===== Header ===== */
@@ -37,16 +45,17 @@
     top: 0;
     background-color: var(--color-fondo);
     border-bottom: 1px solid var(--color-borde);
-    padding: 1rem 1.5rem;
+    padding: 0.9rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 100;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
   }
 
   header.sitio-header .nombre {
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     color: var(--color-primario-oscuro);
     text-decoration: none;
   }
@@ -56,12 +65,16 @@
   }
 
   @media (min-width: 768px) {
+    header.sitio-header {
+      padding: 1rem 2rem;
+    }
     header.sitio-header nav a {
       display: inline-block;
-      margin-left: 1.2rem;
+      margin-left: 1.4rem;
       color: var(--color-texto-suave);
       text-decoration: none;
       font-size: 0.9rem;
+      transition: color 0.2s ease;
     }
     header.sitio-header nav a:hover {
       color: var(--color-primario);
@@ -70,9 +83,16 @@
 
   /* ===== Estructura general de secciones ===== */
   section {
-    padding: var(--espaciado-seccion) 1.5rem;
+    padding: var(--espaciado-seccion) 1.25rem;
     max-width: 820px;
     margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    section {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 
   section:nth-child(even) {
@@ -89,21 +109,32 @@
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: clamp(1.65rem, 5.5vw, 2.5rem);
+    line-height: 1.25;
     color: var(--color-primario-oscuro);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: clamp(1.3rem, 3.5vw, 1.6rem);
     color: var(--color-primario-oscuro);
     margin-bottom: 1rem;
   }
 
+  h3 {
+    font-size: 1.05rem;
+    color: var(--color-texto);
+    margin: 1.25rem 0 0.5rem;
+  }
+
   p {
     color: var(--color-texto-suave);
-    font-size: 1.05rem;
+    font-size: 1rem;
     margin: 0.5rem 0;
+  }
+
+  @media (min-width: 600px) {
+    p { font-size: 1.05rem; }
   }
 
   .etiqueta {
@@ -123,18 +154,51 @@
   .caja-demo {
     border: 2px dashed var(--color-borde);
     border-radius: var(--radio);
-    padding: 3rem 1.5rem;
+    padding: 2.5rem 1.25rem;
     text-align: center;
     color: var(--color-texto-suave);
     background-color: #fff;
+    box-shadow: var(--sombra);
     margin-top: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .caja-demo {
+      padding: 3rem 2rem;
+    }
+  }
+
+  /* ===== Grilla "¿Es para vos?" ===== */
+  .para-quien-grid {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  @media (min-width: 700px) {
+    .para-quien-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .tarjeta {
+    background-color: #fff;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 1.25rem 1.4rem;
+    box-shadow: var(--sombra);
+  }
+
+  .tarjeta h3 {
+    margin-top: 0;
   }
 
   /* ===== Listas con check ===== */
   .lista-check {
     list-style: none;
     padding: 0;
-    margin: 1rem 0;
+    margin: 0.75rem 0 0;
   }
 
   .lista-check li {
@@ -160,8 +224,15 @@
   /* ===== Pasos numerados ===== */
   .pasos {
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
     margin-top: 1.5rem;
+  }
+
+  @media (min-width: 700px) {
+    .pasos {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 2rem;
+    }
   }
 
   .paso {
@@ -183,6 +254,10 @@
     font-weight: 700;
   }
 
+  .paso p {
+    margin: 0.3rem 0;
+  }
+
   /* ===== Acordeón de preguntas frecuentes ===== */
   .faq-item {
     border-bottom: 1px solid var(--color-borde);
@@ -193,14 +268,20 @@
     text-align: left;
     background: none;
     border: none;
-    padding: 1rem 0;
-    font-size: 1.05rem;
+    padding: 1rem 0.25rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--color-texto);
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+    transition: color 0.2s ease;
+  }
+
+  @media (min-width: 600px) {
+    .faq-pregunta { font-size: 1.05rem; }
   }
 
   .faq-pregunta:hover {
@@ -214,7 +295,7 @@
   }
 
   .faq-respuesta p {
-    padding-bottom: 1rem;
+    padding: 0 0.25rem 1rem;
   }
 
   .faq-icono {
@@ -245,6 +326,8 @@
 
   .boton-cta {
     display: inline-block;
+    width: 100%;
+    max-width: 320px;
     margin-top: 1.5rem;
     background-color: #fff;
     color: var(--color-primario-oscuro);
@@ -252,8 +335,15 @@
     border-radius: 999px;
     font-weight: 700;
     text-decoration: none;
+    text-align: center;
     font-size: 1.05rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  @media (min-width: 480px) {
+    .boton-cta {
+      width: auto;
+    }
   }
 
   .boton-cta:hover {
@@ -264,7 +354,7 @@
   /* ===== Footer ===== */
   footer {
     text-align: center;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.25rem;
     font-size: 0.85rem;
     color: var(--color-texto-suave);
   }
@@ -302,19 +392,25 @@
       <h2>¿Es para vos?</h2>
       <p>[Texto placeholder] Antes de seguir, veamos si esto tiene sentido para tu negocio.</p>
 
-      <h3>Sí, es para vos si...</h3>
-      <ul class="lista-check">
-        <li>Atendés pedidos por WhatsApp y llevás el stock de memoria o en un cuaderno.</li>
-        <li>Tenés un comercio de barrio: tienda, bazar, despensa, zapatería o algo parecido.</li>
-        <li>Estás cansada de mandar fotos una por una y de vender algo que ya no tenés.</li>
-      </ul>
+      <div class="para-quien-grid">
+        <div class="tarjeta">
+          <h3>Sí, es para vos si...</h3>
+          <ul class="lista-check">
+            <li>Atendés pedidos por WhatsApp y llevás el stock de memoria o en un cuaderno.</li>
+            <li>Tenés un comercio de barrio: tienda, bazar, despensa, zapatería o algo parecido.</li>
+            <li>Estás cansada de mandar fotos una por una y de vender algo que ya no tenés.</li>
+          </ul>
+        </div>
 
-      <h3>No es para vos si...</h3>
-      <ul class="lista-check no">
-        <li>Ya tenés un sistema de catálogo y stock armado, funcionando bien.</li>
-        <li>Buscás algo mucho más grande o técnico, tipo tienda online completa.</li>
-        <li>No atendés pedidos por WhatsApp ni necesitás controlar stock.</li>
-      </ul>
+        <div class="tarjeta">
+          <h3>No es para vos si...</h3>
+          <ul class="lista-check no">
+            <li>Ya tenés un sistema de catálogo y stock armado, funcionando bien.</li>
+            <li>Buscás algo mucho más grande o técnico, tipo tienda online completa.</li>
+            <li>No atendés pedidos por WhatsApp ni necesitás controlar stock.</li>
+          </ul>
+        </div>
+      </div>
     </section>
   </div>
 
