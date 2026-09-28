@@ -4,19 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Giselle | Catálogos digitales para vender por WhatsApp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   /* ===== Variables de estilo (colores, tipografía) ===== */
   :root {
-    --color-fondo: #ffffff;
-    --color-fondo-alt: #f7f5f2;
-    --color-texto: #222222;
-    --color-texto-suave: #555555;
-    --color-primario: #2f6f4f;
-    --color-primario-oscuro: #234f38;
-    --color-borde: #e0ddd7;
-    --fuente: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --color-fondo: #f7ece9;
+    --color-fondo-alt: #f0dbd5;
+    --color-texto: #3f2c2c;
+    --color-texto-suave: #7a5a58;
+    --color-primario: #a15a5f;
+    --color-primario-oscuro: #6e3a3d;
+    --color-borde: #e6cfc8;
+    --fuente: 'Jost', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --fuente-titulo: 'Playfair Display', Georgia, 'Times New Roman', serif;
     --radio: 12px;
-    --espaciado-seccion: 4rem;
+    --sombra: 0 4px 18px rgba(110, 58, 61, 0.1);
+    --espaciado-seccion: clamp(2.75rem, 6vw, 4.5rem);
   }
 
   * { box-sizing: border-box; }
@@ -29,6 +34,13 @@
     color: var(--color-texto);
     background-color: var(--color-fondo);
     line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 3px solid var(--color-primario);
+    outline-offset: 2px;
   }
 
   /* ===== Header ===== */
@@ -37,16 +49,18 @@
     top: 0;
     background-color: var(--color-fondo);
     border-bottom: 1px solid var(--color-borde);
-    padding: 1rem 1.5rem;
+    padding: 0.9rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 100;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
   }
 
   header.sitio-header .nombre {
+    font-family: var(--fuente-titulo);
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--color-primario-oscuro);
     text-decoration: none;
   }
@@ -56,12 +70,16 @@
   }
 
   @media (min-width: 768px) {
+    header.sitio-header {
+      padding: 1rem 2rem;
+    }
     header.sitio-header nav a {
       display: inline-block;
-      margin-left: 1.2rem;
+      margin-left: 1.4rem;
       color: var(--color-texto-suave);
       text-decoration: none;
       font-size: 0.9rem;
+      transition: color 0.2s ease;
     }
     header.sitio-header nav a:hover {
       color: var(--color-primario);
@@ -70,9 +88,28 @@
 
   /* ===== Estructura general de secciones ===== */
   section {
-    padding: var(--espaciado-seccion) 1.5rem;
+    padding: var(--espaciado-seccion) 1.25rem;
     max-width: 820px;
     margin: 0 auto;
+    text-align: center;
+  }
+
+  /* Bloques que se leen mejor alineados a la izquierda */
+  .para-quien-grid,
+  .tarjeta,
+  .lista-check,
+  .pasos,
+  .paso,
+  .faq-item,
+  .tabla-wrap {
+    text-align: left;
+  }
+
+  @media (min-width: 768px) {
+    section {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 
   section:nth-child(even) {
@@ -89,21 +126,38 @@
   }
 
   h1 {
-    font-size: 2rem;
+    font-family: var(--fuente-titulo);
+    font-weight: 700;
+    font-size: clamp(1.75rem, 5.5vw, 2.65rem);
+    line-height: 1.3;
     color: var(--color-primario-oscuro);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.9rem;
+    letter-spacing: 0.01em;
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-family: var(--fuente-titulo);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 3.5vw, 1.75rem);
     color: var(--color-primario-oscuro);
     margin-bottom: 1rem;
   }
 
+  h3 {
+    font-family: var(--fuente-titulo);
+    font-size: 1.15rem;
+    color: var(--color-texto);
+    margin: 1.25rem 0 0.5rem;
+  }
+
   p {
     color: var(--color-texto-suave);
-    font-size: 1.05rem;
+    font-size: 1rem;
     margin: 0.5rem 0;
+  }
+
+  @media (min-width: 600px) {
+    p { font-size: 1.05rem; }
   }
 
   .etiqueta {
@@ -123,18 +177,51 @@
   .caja-demo {
     border: 2px dashed var(--color-borde);
     border-radius: var(--radio);
-    padding: 3rem 1.5rem;
+    padding: 2.5rem 1.25rem;
     text-align: center;
     color: var(--color-texto-suave);
     background-color: #fff;
+    box-shadow: var(--sombra);
     margin-top: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .caja-demo {
+      padding: 3rem 2rem;
+    }
+  }
+
+  /* ===== Grilla "¿Es para vos?" ===== */
+  .para-quien-grid {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  @media (min-width: 700px) {
+    .para-quien-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .tarjeta {
+    background-color: #fff;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 1.25rem 1.4rem;
+    box-shadow: var(--sombra);
+  }
+
+  .tarjeta h3 {
+    margin-top: 0;
   }
 
   /* ===== Listas con check ===== */
   .lista-check {
     list-style: none;
     padding: 0;
-    margin: 1rem 0;
+    margin: 0.75rem 0 0;
   }
 
   .lista-check li {
@@ -154,14 +241,21 @@
 
   .lista-check.no li::before {
     content: "✖";
-    color: #b23a3a;
+    color: #8a3d3d;
   }
 
   /* ===== Pasos numerados ===== */
   .pasos {
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
     margin-top: 1.5rem;
+  }
+
+  @media (min-width: 700px) {
+    .pasos {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 2rem;
+    }
   }
 
   .paso {
@@ -183,6 +277,10 @@
     font-weight: 700;
   }
 
+  .paso p {
+    margin: 0.3rem 0;
+  }
+
   /* ===== Acordeón de preguntas frecuentes ===== */
   .faq-item {
     border-bottom: 1px solid var(--color-borde);
@@ -193,14 +291,20 @@
     text-align: left;
     background: none;
     border: none;
-    padding: 1rem 0;
-    font-size: 1.05rem;
+    padding: 1rem 0.25rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--color-texto);
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+    transition: color 0.2s ease;
+  }
+
+  @media (min-width: 600px) {
+    .faq-pregunta { font-size: 1.05rem; }
   }
 
   .faq-pregunta:hover {
@@ -214,7 +318,7 @@
   }
 
   .faq-respuesta p {
-    padding-bottom: 1rem;
+    padding: 0 0.25rem 1rem;
   }
 
   .faq-icono {
@@ -245,6 +349,8 @@
 
   .boton-cta {
     display: inline-block;
+    width: 100%;
+    max-width: 320px;
     margin-top: 1.5rem;
     background-color: #fff;
     color: var(--color-primario-oscuro);
@@ -252,8 +358,15 @@
     border-radius: 999px;
     font-weight: 700;
     text-decoration: none;
+    text-align: center;
     font-size: 1.05rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  @media (min-width: 480px) {
+    .boton-cta {
+      width: auto;
+    }
   }
 
   .boton-cta:hover {
@@ -264,7 +377,7 @@
   /* ===== Footer ===== */
   footer {
     text-align: center;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.25rem;
     font-size: 0.85rem;
     color: var(--color-texto-suave);
   }
@@ -277,7 +390,7 @@
     <a href="#inicio" class="nombre">Giselle</a>
     <nav>
       <a href="#para-quien">Para quién</a>
-      <a href="#demo">Demo</a>
+      <a href="demo.html">Demo</a>
       <a href="#como-trabajo">Cómo trabajo</a>
       <a href="#preguntas">Preguntas</a>
       <a href="#reunion">Agendar</a>
@@ -288,10 +401,10 @@
   <div class="franja">
     <section id="inicio">
       <span class="etiqueta">Catálogos digitales por WhatsApp</span>
-      <h1>Soy Giselle. Ayudo a tiendas, bazares, despensas y zapaterías a vender más fácil por WhatsApp.</h1>
+      <h1>Convierto tu WhatsApp en un canal de venta ordenado: catálogo digital con stock conectado, para que tus clientes pidan sin fotos repetidas ni productos agotados.</h1>
       <p>
-        [Texto placeholder] Armo catálogos digitales con stock conectado, para que no pierdas tiempo
-        ni vendas algo que ya no tenés.
+        Soy Giselle. Ayudo a locales comerciales de barrio a vender más simple, usando herramientas de
+        IA que hacen el trabajo pesado por ellos.
       </p>
     </section>
   </div>
@@ -302,16 +415,25 @@
       <h2>¿Es para vos?</h2>
       <p>[Texto placeholder] Antes de seguir, veamos si esto tiene sentido para tu negocio.</p>
 
-      <h3>Sí, es para vos si...</h3>
-      <ul class="lista-check">
-        <li>[Placeholder] Atendés pedidos por WhatsApp y llevás el stock de memoria o en un cuaderno.</li>
-        <li>[Placeholder] Tenés un negocio chico o mediano: tienda, bazar, despensa o zapatería.</li>
-      </ul>
+      <div class="para-quien-grid">
+        <div class="tarjeta">
+          <h3>Sí, es para vos si...</h3>
+          <ul class="lista-check">
+            <li>Atendés pedidos por WhatsApp y llevás el stock de memoria o en un cuaderno.</li>
+            <li>Tenés un comercio de barrio: tienda, bazar, despensa, zapatería o algo parecido.</li>
+            <li>Estás cansada de mandar fotos una por una y de vender algo que ya no tenés.</li>
+          </ul>
+        </div>
 
-      <h3>No es para vos si...</h3>
-      <ul class="lista-check no">
-        <li>[Placeholder] Ya tenés un sistema armado y buscás algo más grande o más técnico.</li>
-      </ul>
+        <div class="tarjeta">
+          <h3>No es para vos si...</h3>
+          <ul class="lista-check no">
+            <li>Ya tenés un sistema de catálogo y stock armado, funcionando bien.</li>
+            <li>Buscás algo mucho más grande o técnico, tipo tienda online completa.</li>
+            <li>No atendés pedidos por WhatsApp ni necesitás controlar stock.</li>
+          </ul>
+        </div>
+      </div>
     </section>
   </div>
 
@@ -319,11 +441,13 @@
   <div class="franja">
     <section id="demo">
       <h2>Antes y después</h2>
-      <p>[Texto placeholder] Antes: mandás fotos una por una y no sabés si te queda stock. Después: tu cliente ve el catálogo, pide solo y vos ves el stock actualizado.</p>
+      <p>Antes: mandás fotos una por una y no sabés si te queda stock. Después: tu cliente ve el catálogo, pide solo y vos ves el stock actualizado.</p>
       <div class="caja-demo">
-        [Espacio reservado para la demo / video / capturas — se completa después]
+        Probá una demo interactiva con el ejemplo de una despensa de barrio.
+        <br><br>
+        <a href="demo.html" class="boton-cta" style="background-color:var(--color-primario); color:#fff;">Ver demo interactiva</a>
       </div>
-      <p>[Texto placeholder] Mirá cómo se ve en la vida real, con un negocio como el tuyo.</p>
+      <p>Mirá cómo se ve en la vida real, con un negocio como el tuyo.</p>
     </section>
   </div>
 
@@ -331,19 +455,31 @@
   <div class="franja">
     <section id="como-trabajo">
       <h2>Cómo trabajo, paso a paso</h2>
-      <p>[Texto placeholder] Vos seguís atendiendo como siempre, solo que ahora es mucho más simple.</p>
+      <p>Sin vueltas: primero ves cómo funciona, recién después hablamos de números.</p>
       <div class="pasos">
         <div class="paso">
           <div class="numero">1</div>
-          <p>[Placeholder] Me pasás fotos, precios y cantidades de tus productos.</p>
+          <p>Mirás la demo acá arriba, con calma, sin que nadie te esté mirando por encima del hombro.</p>
         </div>
         <div class="paso">
           <div class="numero">2</div>
-          <p>[Placeholder] Revisamos juntos el catálogo antes de dejarlo listo.</p>
+          <p>Si te copó, me escribís y coordinamos una charla de 20 minutos, sin compromiso.</p>
         </div>
         <div class="paso">
           <div class="numero">3</div>
-          <p>[Placeholder] En pocos días lo tenés funcionando con tu WhatsApp de siempre.</p>
+          <p>En esa charla 1:1 vemos tu negocio puntual, y ahí — recién ahí — hablamos de la inversión.</p>
+        </div>
+        <div class="paso">
+          <div class="numero">4</div>
+          <p>Si decidís seguir, me pasás fotos, precios y cantidades de tus productos.</p>
+        </div>
+        <div class="paso">
+          <div class="numero">5</div>
+          <p>Armamos el catálogo juntas y lo revisamos antes de dejarlo listo.</p>
+        </div>
+        <div class="paso">
+          <div class="numero">6</div>
+          <p>En pocos días lo tenés funcionando con tu WhatsApp de siempre, y vos seguís atendiendo igual que siempre, solo que más simple.</p>
         </div>
       </div>
     </section>
@@ -353,8 +489,15 @@
   <div class="franja">
     <section id="presupuesto">
       <h2>Cómo armo un presupuesto</h2>
-      <p>[Texto placeholder] El número se habla en una charla de 20 minutos, después de que veas la demo funcionando.</p>
-      <p>[Texto placeholder] Así arrancamos por lo que necesitás vos, no por un precio genérico que no tiene que ver con tu negocio.</p>
+      <p>Cada presupuesto se arma a medida, según cuántos productos tenés y cómo funciona hoy tu WhatsApp.</p>
+      <p>No hay dos negocios iguales: un bazar con 200 artículos no necesita lo mismo que una zapatería con 30.</p>
+      <p>Por eso el número final sale después de ver tu catálogo real, no antes.</p>
+      <p>Prefiero mostrarte cómo queda funcionando antes de hablar de precio.</p>
+      <p>En una demo de 20 minutos ves el catálogo armado y el aviso de stock en acción con tus propios productos.</p>
+      <p>Ahí definimos juntas qué necesitás vos puntualmente, y armamos la propuesta con eso.</p>
+      <p>Así el presupuesto refleja lo que realmente vas a usar, no un paquete genérico.</p>
+      <p>Si querés, coordinamos esa reunión de 20 minutos y lo vemos en vivo.</p>
+      <a href="https://wa.me/5493515212046" class="boton-cta" style="background-color:var(--color-primario); color:#fff;">Agendá la reunión de 20 minutos</a>
     </section>
   </div>
 
@@ -365,61 +508,81 @@
 
       <div class="faq-item">
         <button class="faq-pregunta" onclick="alternarFaq(this)">
-          ¿Funciona con tu WhatsApp de siempre?
+          ¿Y esto cuánto sale?
           <span class="faq-icono">+</span>
         </button>
         <div class="faq-respuesta">
-          <p>[Texto placeholder] Sí, funciona con el WhatsApp que ya usás todos los días.</p>
+          <p>El número depende de tu catálogo, así que no lo tiro al aire. Lo vemos en la demo y te lo confirmo en la reunión de 20 minutos.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-pregunta" onclick="alternarFaq(this)">
-          ¿Podés actualizarlo vos sola?
+          ¿Cuánto tarda en estar listo?
           <span class="faq-icono">+</span>
         </button>
         <div class="faq-respuesta">
-          <p>[Texto placeholder] Sí, podés actualizar el catálogo sin depender de nadie más.</p>
+          <p>Unos pocos días, una vez que me pasás fotos, precios y cantidades. No es una obra en meses.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-pregunta" onclick="alternarFaq(this)">
-          ¿Qué pasa si se rompe?
+          No sé si esto sirve para mi rubro
           <span class="faq-icono">+</span>
         </button>
         <div class="faq-respuesta">
-          <p>[Texto placeholder] Te acompaño para resolverlo, no quedás sola con el problema.</p>
+          <p>Si atendés pedidos por WhatsApp y manejás stock, sirve. Tienda, bazar, despensa, zapatería o algo parecido: la lógica es la misma.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-pregunta" onclick="alternarFaq(this)">
-          ¿Necesitás comprar algo más?
+          ¿Y si no funciona para mi negocio?
           <span class="faq-icono">+</span>
         </button>
         <div class="faq-respuesta">
-          <p>[Texto placeholder] No necesitás comprar equipos ni programas adicionales.</p>
+          <p>Por eso arrancamos por la demo, no por la venta. Lo ves funcionando con un caso real antes de decidir algo.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-pregunta" onclick="alternarFaq(this)">
-          ¿Cuánto tiempo te lleva a vos armarlo?
+          ¿Me quedo trabada después, sin saber usarlo?
           <span class="faq-icono">+</span>
         </button>
         <div class="faq-respuesta">
-          <p>[Texto placeholder] Es un proceso liviano y guiado, no te va a quitar tu tiempo de atender.</p>
+          <p>No. Te dejo armado el catálogo, te muestro cómo actualizarlo vos misma y quedo disponible si algo se traba.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-pregunta" onclick="alternarFaq(this)">
-          ¿Esto sirve si tengo pocos productos?
+          Pasame el número directamente, sin reunión
           <span class="faq-icono">+</span>
         </button>
         <div class="faq-respuesta">
-          <p>[Texto placeholder] Sí, se adapta al tamaño de tu catálogo, sea grande o chico.</p>
+          <p>No trabajo así: el precio sale de ver tu catálogo real, no de un número genérico. La demo y la charla de 20 minutos son el camino.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta" onclick="alternarFaq(this)">
+          ¿Funciona con el WhatsApp que ya uso?
+          <span class="faq-icono">+</span>
+        </button>
+        <div class="faq-respuesta">
+          <p>Sí, con el mismo número de siempre. No hay que migrar nada.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta" onclick="alternarFaq(this)">
+          ¿Puedo actualizar precios y stock yo sola?
+          <span class="faq-icono">+</span>
+        </button>
+        <div class="faq-respuesta">
+          <p>Sí, sin depender de nadie más. Te lo muestro en la entrega y te dejo una guía corta para cuando se te olvide.</p>
         </div>
       </div>
 
@@ -431,7 +594,7 @@
     <section id="reunion">
       <h2>¿Querés ver cómo queda en tu negocio?</h2>
       <p>[Texto placeholder] Charlamos 20 minutos, sin compromiso. Agendá el horario que te quede mejor.</p>
-      <a href="#" class="boton-cta">Agendá una reunión de 20 minutos</a>
+      <a href="https://wa.me/5493515212046" class="boton-cta">Agendá una reunión de 20 minutos</a>
     </section>
   </div>
 
